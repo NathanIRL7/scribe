@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – Scribe</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../CSS/style.css">
+  <link rel="stylesheet" href="../CSS/design.css">
+  <link rel="stylesheet" href="../CSS/dashboard.css">
+  <link rel="stylesheet" href="../CSS/sidebar.css">
+</head>
+<body class="app-with-sidebar" data-page="dashboard">
+  <aside id="sidebar" class="sidebar">
+    <button id="sidebar-toggle" class="sidebar-toggle" title="Sidebar ein-/ausklappen">
+      <i data-lucide="panel-left-close"></i>
+    </button>
+    <nav class="sidebar-nav">
+      <a href="home.html" class="sidebar-link active" target="app-frame">
+        <i data-lucide="home"></i>
+        <span>Home</span>
+      </a>
+      <a href="profil.html" class="sidebar-link" target="app-frame">
+        <i data-lucide="id-card"></i>
+        <span>Profil</span>
+      </a>
+      <a href="onboarding.html" class="sidebar-link" target="app-frame">
+        <i data-lucide="pen-line"></i>
+        <span>Schreibstil</span>
+      </a>
+      <a href="kontakte.html" class="sidebar-link" target="app-frame">
+        <i data-lucide="contact"></i>
+        <span>Kontakte</span>
+      </a>
+      <a href="kalt-email.html" class="sidebar-link" target="app-frame">
+        <i data-lucide="mail-plus"></i>
+        <span>Kalt-Email</span>
+      </a>
+      <a href="follow-up.html" class="sidebar-link" target="app-frame">
+        <i data-lucide="rotate-ccw"></i>
+        <span>Follow-up</span>
+      </a>
+      <a href="verlauf.html" class="sidebar-link" target="app-frame">
+        <i data-lucide="scroll-text"></i>
+        <span>Verlauf</span>
+      </a>
+      <a href="antwort.html" class="sidebar-link" target="app-frame">
+        <i data-lucide="reply"></i>
+        <span>Antwort</span>
+      </a>
+    </nav>
+  </aside>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="home.html" class="logo" target="app-frame">Scribe</a>
+      <div class="header-right">
+        <button id="chat-toggle" class="btn-chat" type="button" title="KI-Assistent">
+          <i data-lucide="message-circle"></i>
+          <span>Assistent</span>
+        </button>
+        <span id="user-email" class="user-email"></span>
+        <button id="logout-btn" class="btn-logout" type="button">Abmelden</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-frame-wrap">
+    <iframe id="app-frame" name="app-frame" class="app-frame" src="home.html" title="Inhalt"></iframe>
+  </div>
+
+  <aside id="chat-panel" class="chat-panel">
+    <div class="chat-header">
+      <h4>KI-Assistent</h4>
+      <button id="chat-close" class="btn-chat-close" type="button"><i data-lucide="x"></i></button>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <p class="chat-hint">Frag mich z.B.: „Schreib eine Kalt-Email an Max von Tech GmbH“ – (KI kommt später)</p>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Nachricht eingeben..." disabled>
+      <button id="chat-send" type="button" disabled>Senden</button>
+    </div>
+  </aside>
+  <div id="chat-overlay" class="chat-overlay"></div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../JAVA SCRIPT/supabase-config.js"></script>
+  <script src="../JAVA SCRIPT/sidebar.js"></script>
+  <script src="../JAVA SCRIPT/dashboard.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function() { lucide.createIcons(); });</script>
+</body>
+</html>

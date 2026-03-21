@@ -1,0 +1,58 @@
+/* Scribe – Farben: neutrale Flächen + Teal-Akzent (clean / SaaS, kein Indigo) */
+
+:root {
+  --primary: #0d9488;
+  --primary-hover: #0f766e;
+  --primary-light: #ccfbf1;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --header-bg: #1e293b;
+  --error: #dc2626;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.auth-box {
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+}
+
+input, select, textarea {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+button {
+  background: var(--primary);
+  border-radius: 8px;
+}
+
+button:hover {
+  background: var(--primary-hover);
+}
+
+.header {
+  background: var(--header-bg);
+}
+
+.tool-card:hover {
+  border-color: var(--primary);
+}
+
+.btn-loeschen {
+  background: var(--error);
+}

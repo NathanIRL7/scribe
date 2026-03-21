@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Follow-up – Scribe</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../CSS/style.css">
+  <link rel="stylesheet" href="../CSS/design.css">
+  <link rel="stylesheet" href="../CSS/dashboard.css">
+  <link rel="stylesheet" href="../CSS/kalt-email.css">
+  <link rel="stylesheet" href="../CSS/sidebar.css">
+</head>
+<body class="app-with-sidebar" data-page="follow-up">
+  <aside id="sidebar" class="sidebar">
+    <button id="sidebar-toggle" class="sidebar-toggle" title="Sidebar ein-/ausklappen"><i data-lucide="panel-left-close"></i></button>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="sidebar-link"><i data-lucide="home"></i><span>Home</span></a>
+      <div class="sidebar-section"><span>E-Mails</span></div>      <a href="profil.html" class="sidebar-link"><i data-lucide="id-card"></i><span>Profil</span></a>
+      <a href="onboarding.html" class="sidebar-link"><i data-lucide="pen-line"></i><span>Schreibstil</span></a>
+      <a href="kontakte.html" class="sidebar-link"><i data-lucide="contact"></i><span>Kontakte</span></a>
+      <a href="kalt-email.html" class="sidebar-link"><i data-lucide="mail-plus"></i><span>Kalt-Email</span></a>
+      <a href="follow-up.html" class="sidebar-link"><i data-lucide="rotate-ccw"></i><span>Follow-up</span></a>
+      <a href="verlauf.html" class="sidebar-link"><i data-lucide="scroll-text"></i><span>Verlauf</span></a>
+      <a href="antwort.html" class="sidebar-link"><i data-lucide="reply"></i><span>Antwort</span></a>
+    </nav>
+  </aside>
+  <header class="header">
+    <div class="header-inner">
+      <a href="dashboard.html" class="logo">Scribe</a>
+      <a href="dashboard.html" class="btn-logout" style="text-decoration:none;color:white;">Dashboard</a>
+    </div>
+  </header>
+  <div class="page-content">
+  <div class="auth-box">
+    <h1><i data-lucide="rotate-ccw" style="width:24px;height:24px;vertical-align:middle;margin-right:8px;"></i>Follow-up Generator</h1>
+    <p>Demnächst verfügbar.</p>
+    <form  id ="form">
+      <label>Kontakt auswählen (optional)</label>
+      <select id="kontakt-auswahl">
+        <option value="">- Manuell eingeben -</option>
+      </select>
+      <label>Name des Empfängers</label>
+      <input type="text" id="empfänger" placeholder="z.B. Max Mustermann" required>
+      <label>Unternehmen / Kontext</label>
+      <input type="text" id="unternehmen" placeholder="z.B. Tech GmbH">
+      <label>Bezug zur ersten E-Mail (optional)</label>
+      <input type="text" id="bezug" placeholder="z.B. wegen eines möglichen Meetings">
+      <label>Deine Nachfrage</label>
+      <textarea id="nachfrage" rows="3" placeholder="z.B. Ich wollte nachfragen, ob du Zeit für ein kurzes Gespräch hättest..." required></textarea>
+      <p id="fehler" class="fehler"></p>
+      <button type="submit" id="btn">Follow-up generieren</button>
+    </form>
+    <div id="ergebnis" class="ergebnis-box" style="display:none;">
+      <h3>Deine Follow-up E-Mail:</h3>
+      <div id="email-text"></div>
+      <button type="button" id="kopieren">In Zwischenablage kopieren</button>
+    </div>
+    <a href="dashboard.html">← Zurück zum Dashboard</a>
+  </div>
+  </div>
+
+  <script src="../JAVA SCRIPT/embed.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../JAVA SCRIPT/supabase-config.js"></script>
+  <script src="../JAVA SCRIPT/sidebar.js"></script>
+  <script src="../JAVA SCRIPT/follow-up.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function() { lucide.createIcons(); });</script>
+</body>
+</html>

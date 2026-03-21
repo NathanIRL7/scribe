@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login – Scribe</title>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../CSS/style.css">
+  <link rel="stylesheet" href="../CSS/design.css">
+</head>
+<body>
+    <div class="auth-box">
+        <h1 id="titel">Login</h1>
+        <form id="form">
+            <label>E-Mail</label>
+            <input type="email" id="email" required>
+            <label>Passwort</label>
+            <input type="password" id="password" required>
+            <p id="fehler" class="fehler"></p>
+            <button type="submit" id="btn">Einloggen</button>
+        </form>
+        <p>
+            <button type="button" id="umschalter">Noch kein Konto? Registrieren</button>
+        </p>
+        <a href="index.html">← Zurück</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../JAVA SCRIPT/supabase-config.js"></script>
+    <script src="../JAVA SCRIPT/auth.js"></script>
+</body>
+</html>

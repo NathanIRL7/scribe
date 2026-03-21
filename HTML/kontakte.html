@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakte – Scribe</title>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../CSS/style.css">
+  <link rel="stylesheet" href="../CSS/design.css">
+  <link rel="stylesheet" href="../CSS/dashboard.css">
+  <link rel="stylesheet" href="../CSS/sidebar.css">
+</head>
+<body class="app-with-sidebar" data-page="kontakte">
+  <aside id="sidebar" class="sidebar">
+    <button id="sidebar-toggle" class="sidebar-toggle" title="Sidebar ein-/ausklappen"><i data-lucide="panel-left-close"></i></button>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="sidebar-link"><i data-lucide="home"></i><span>Home</span></a>
+      <a href="profil.html" class="sidebar-link"><i data-lucide="id-card"></i><span>Profil</span></a>
+      <a href="onboarding.html" class="sidebar-link"><i data-lucide="pen-line"></i><span>Schreibstil</span></a>
+      <a href="kontakte.html" class="sidebar-link"><i data-lucide="contact"></i><span>Kontakte</span></a>
+      <a href="kalt-email.html" class="sidebar-link"><i data-lucide="mail-plus"></i><span>Kalt-Email</span></a>
+      <a href="follow-up.html" class="sidebar-link"><i data-lucide="rotate-ccw"></i><span>Follow-up</span></a>
+      <a href="verlauf.html" class="sidebar-link"><i data-lucide="scroll-text"></i><span>Verlauf</span></a>
+      <a href="antwort.html" class="sidebar-link"><i data-lucide="reply"></i><span>Antwort</span></a>
+    </nav>
+  </aside>
+  <header class="header">
+    <div class="header-inner">
+      <a href="dashboard.html" class="logo">Scribe</a>
+      <a href="dashboard.html" class="btn-logout" style="text-decoration:none;color:white;">Dashboard</a>
+    </div>
+  </header>
+  <div class="page-content">
+    <div class="auth-box">
+        <h1><i data-lucide="contact" style="width:24px;height:24px;vertical-align:middle;margin-right:8px;"></i>Kontakte</h1>
+        <p>Speichere Kontakte für schnelle Auswahl beim E-Mail-Schreiben.</p>
+
+        <form id="form">
+            <label>Name</label>
+            <input type="text" id="name" placeholder="z.B. Max Mustermann" required>
+            <label>Firma</label>
+            <input type="text" id="firma" placeholder="z.B. Tech GmbH">
+            <label>E-Mail</label>
+            <input type="email" id="email" placeholder="max@firma.de">
+            <p id="fehler" class="fehler"></p>
+            <button type="submit" id="btn">Kontakt hinzufügen</button>
+        </form>
+
+        <h3 style="margin-top:2rem;">Deine Kontakte</h3>
+        <div id="liste"></div>
+        <p id="leer" style="display:none;color: #666;">Noch keine Kontakte. Füge oben einen hinzu.</p>
+
+        <a href="dashboard.html">← Zurück zum Dashboard</a>
+    </div>
+  </div>
+
+  <script src="../JAVA SCRIPT/embed.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../JAVA SCRIPT/supabase-config.js"></script>
+    <script src="../JAVA SCRIPT/sidebar.js"></script>
+  <script src="../JAVA SCRIPT/kontakte.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function() { lucide.createIcons(); });</script>
+</body>
+</html>

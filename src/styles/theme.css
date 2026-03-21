@@ -1,0 +1,23 @@
+/* Scribe UI-Kit – Schwarz/Weiß + warme Amber-Akzente (Referenz für Vanilla-CSS) */
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --primary: #0a0a0a;
+  --primary-foreground: #ffffff;
+  --secondary: #fafafa;
+  --secondary-foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --accent: #fffbeb;
+  --accent-foreground: #d97706;
+  --border: #e5e5e5;
+  --muted-foreground: #737373;
+  --destructive: #dc2626;
+  --input-background: #ffffff;
+  --sidebar: #fafafa;
+  --sidebar-foreground: #171717;
+  --sidebar-border: #e5e5e5;
+  --sidebar-accent: #fffbeb;
+  --sidebar-accent-foreground: #d97706;
+  --ring: #d97706;
+}

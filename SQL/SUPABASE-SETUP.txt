@@ -1,0 +1,34 @@
+SCHRITT 0: URL und Key eintragen (für Login/Sign-up)
+- Gehe zu supabase.com → dein Projekt → Settings → API
+- "Project URL" kopieren → in JAVA SCRIPT/supabase-config.js bei SUPABASE_URL einfügen
+- "anon public" Key kopieren → in supabase-config.js bei SUPABASE_KEY einfügen
+- Ohne das funktioniert Login/Registrierung nicht!
+
+SCHRITT 0b: Redirect-URLs für Aktivierungs-Link (wichtig!)
+- Gehe zu supabase.com → dein Projekt → Authentication → URL Configuration
+- "Site URL": Die Adresse, wo deine App läuft (z.B. http://localhost:3000/HTML/auth.html)
+- "Redirect URLs": Füge hinzu:
+  http://localhost:3000/HTML/auth.html
+  http://localhost:3000/HTML/
+  http://127.0.0.1:3000/HTML/auth.html
+- Speichern! Sonst ist die Seite nach dem Aktivierungs-Klick nicht erreichbar.
+
+SCHRITT 1: Supabase öffnen
+- Gehe zu supabase.com
+- Logge dich ein
+- Öffne dein Projekt (oder erstelle eins)
+
+SCHRITT 2: SQL ausführen
+- Links: SQL Editor
+- New query
+- Kopiere den GESAMTEN Inhalt von supabase.sql
+- Einfügen
+- Run (oder F5)
+
+SCHRITT 3: Zugriff prüfen
+- Links: Table Editor
+- Du solltest sehen: schreibstil, user_profil, kontakte, generierte_emails, templates
+- Klick auf eine Tabelle – wenn du eingeloggt bist, siehst du deine Daten
+
+WICHTIG: Du siehst nur deine eigenen Zeilen (user_id = deine User-ID)
+Das ist RLS (Row Level Security) – jeder User sieht nur seine Daten.

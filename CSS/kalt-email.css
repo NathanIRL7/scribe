@@ -1,0 +1,30 @@
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+.ergebnis-box {
+    margin-top:25px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.ergebnis-box h3 {
+    margin-top: 0;
+}
+
+#email-text {
+    white-space: pre-wrap;
+    margin: 15 px 0;
+    line-height: 1.6;
+}
+
+#kopieren {
+    margin-top: 10px;
+}

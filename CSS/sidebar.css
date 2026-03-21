@@ -1,0 +1,136 @@
+/* Sidebar - links,collapible (ICons-only / Icons+Text)*/
+
+.app-with-sidebar .header-inner {
+  max-width: none;
+  width: 100%;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  background: linear-gradient(180deg, #134e4a 0%, #0f172a 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: width 0.25s ease;
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: 64px;
+}
+
+.sidebar:not(.collapsed) {
+  width: 220px;
+}
+.sidebar-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  background: rgba(0,0,0,0.1);
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.25rem; 
+}
+.sidebar-toggle:hover {
+  background: rgba(0,0,0,0.2);
+}
+.sidebar-toggle i {
+  width: 24px;
+  height: 24px;
+  color: #5eead4;
+  stroke: #5eead4;
+}
+.sidebar-nav {
+  flex: 1;
+  padding: 0.75rem 0;
+  overflow-y: auto;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none; 
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.sidebar-link:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+.sidebar-link.active {
+  background: rgba(13, 148, 136, 0.35);
+  color: white;
+}
+
+.sidebar-link i {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.sidebar-link svg,
+.sidebar-toggle svg {
+  stroke: #5eead4;
+}
+.sidebar-link.active svg {
+  stroke: #ffffff;
+}
+
+.sidebar-section {
+  padding: 0.5rem 1rem 0.25rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.5);
+}
+.sidebar.collapsed .sidebar-section {
+  padding: 0.5rem 0;
+  text-align: center;
+}
+.sidebar.collapsed .sidebar-section span {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-link span {
+  display: none;
+}
+.sidebar.collapsed .sidebar-link {
+  justify-content: center;
+  padding: 0.65rem;
+}
+
+/* Main-Bereich + iframe verschieben sich mit Sidebar */
+.app-with-sidebar .header,
+.app-with-sidebar .main,
+.app-with-sidebar .page-content,
+.app-with-sidebar .main-frame-wrap {
+  margin-left: 220px;
+  transition: margin-left 0.25s ease;
+}
+.app-with-sidebar.sidebar-collapsed .header,
+.app-with-sidebar.sidebar-collapsed .main,
+.app-with-sidebar.sidebar-collapsed .page-content,
+.app-with-sidebar.sidebar-collapsed .main-frame-wrap {
+  margin-left: 64px;
+}
+
+.main-frame-wrap {
+  flex: 1;
+  min-height: 0;
+}
+.app-frame {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 56px);
+  border: none;
+  background: #ffffff;
+}
