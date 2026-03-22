@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { Card } from "./Card";
-import { Mail, CheckCircle2, Shield, Zap, Users } from "lucide-react";
+import { Mail, CheckCircle2, Shield, Zap, Users, ArrowRight } from "lucide-react";
 
 type View = "landing" | "dashboard";
 
@@ -22,133 +23,206 @@ export function LandingPage({
     setSubmitted(true);
   };
 
+  useEffect(() => {
+    if (!showWaitlist) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowWaitlist(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showWaitlist]);
+
+  useEffect(() => {
+    if (showWaitlist) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showWaitlist]);
+
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Mail className="w-6 h-6 text-primary" />
-            <h1 className="text-xl font-semibold">Scribe</h1>
+    <div className="min-h-screen bg-background flex flex-col">
+      <header className="border-b border-border bg-card/80 backdrop-blur-sm sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <Mail className="w-6 h-6 text-primary shrink-0" aria-hidden />
+            <span className="text-xl font-semibold tracking-tight">Scribe</span>
           </div>
-          <Button variant="ghost" size="sm" onClick={() => onNavigate("dashboard")}>
-            Anmelden
-          </Button>
+          <nav className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <Link
+              href="/auth"
+              className="inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium bg-primary text-primary-foreground hover:bg-[#171717] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              Anmelden
+            </Link>
+            <Button variant="ghost" size="sm" type="button" onClick={() => onNavigate("dashboard")}>
+              App testen
+            </Button>
+          </nav>
         </div>
       </header>
 
-      <section className="max-w-4xl mx-auto px-6 pt-24 pb-16 text-center">
-        <h1 className="text-5xl font-semibold mb-6 tracking-tight">
-          E-Mails schreiben,
-          <br />
-          die ankommen
-        </h1>
-        <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-          Scribe hilft Freelancern, professionelle E-Mails für Outreach und
-          Follow-ups zu verfassen. Klar, persönlich und effektiv.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button size="lg" onClick={() => setShowWaitlist(true)}>
-            Auf die Warteliste
-          </Button>
-          <Button variant="secondary" size="lg" type="button">
-            Mehr erfahren
-          </Button>
+      <main className="flex-1">
+        <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-12 sm:pb-16 text-center">
+          <p className="text-sm font-medium text-accent-foreground mb-4 tracking-wide uppercase">
+            Für Freelancer
+          </p>
+          <h1 className="text-4xl sm:text-5xl font-semibold mb-6 tracking-tight text-balance leading-tight">
+            E-Mails schreiben,
+            <br className="hidden sm:block" /> die ankommen
+          </h1>
+          <p className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed text-pretty">
+            Scribe hilft Freelancern, professionelle E-Mails für Outreach und
+            Follow-ups zu verfassen. Klar, persönlich und effektiv.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <Button size="lg" type="button" onClick={() => setShowWaitlist(true)} className="w-full sm:w-auto gap-2">
+              Auf die Warteliste
+              <ArrowRight className="w-4 h-4" aria-hidden />
+            </Button>
+            <Button
+              variant="secondary"
+              size="lg"
+              type="button"
+              onClick={() => document.getElementById("scribe-features")?.scrollIntoView({ behavior: "smooth" })}
+              className="w-full sm:w-auto"
+            >
+              Mehr erfahren
+            </Button>
+          </div>
+        </section>
+
+        <section id="scribe-features" className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 scroll-mt-20">
+          <h2 className="sr-only">Funktionen</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <Card className="transition-shadow hover:shadow-md">
+              <div className="w-12 h-12 rounded-lg bg-accent flex items-center justify-center mb-4">
+                <Shield className="w-6 h-6 text-accent-foreground" aria-hidden />
+              </div>
+              <h3 className="mb-2 font-semibold">Vertrauenswürdig</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Keine generischen Vorlagen. Jede E-Mail klingt nach dir.
+              </p>
+            </Card>
+
+            <Card className="transition-shadow hover:shadow-md">
+              <div className="w-12 h-12 rounded-lg bg-accent flex items-center justify-center mb-4">
+                <Zap className="w-6 h-6 text-accent-foreground" aria-hidden />
+              </div>
+              <h3 className="mb-2 font-semibold">Schnell & klar</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Strukturierte Hilfe beim Schreiben – ohne Ablenkung.
+              </p>
+            </Card>
+
+            <Card className="sm:col-span-2 lg:col-span-1 transition-shadow hover:shadow-md">
+              <div className="w-12 h-12 rounded-lg bg-accent flex items-center justify-center mb-4">
+                <Users className="w-6 h-6 text-accent-foreground" aria-hidden />
+              </div>
+              <h3 className="mb-2 font-semibold">Für Freelancer</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Entwickelt von Freelancern für Freelancer.
+              </p>
+            </Card>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-border mt-auto">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+          <span>© {new Date().getFullYear()} Scribe</span>
+          <div className="flex gap-6">
+            <Link href="/auth" className="hover:text-foreground transition-colors">
+              Login
+            </Link>
+            <button
+              type="button"
+              onClick={() => document.getElementById("scribe-features")?.scrollIntoView({ behavior: "smooth" })}
+              className="hover:text-foreground transition-colors"
+            >
+              Funktionen
+            </button>
+          </div>
         </div>
-      </section>
-
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-3 gap-8">
-          <Card>
-            <div className="w-12 h-12 rounded-lg bg-accent flex items-center justify-center mb-4">
-              <Shield className="w-6 h-6 text-accent-foreground" />
-            </div>
-            <h3 className="mb-2 font-semibold">Vertrauenswürdig</h3>
-            <p className="text-muted-foreground">
-              Keine generischen Vorlagen. Jede E-Mail klingt nach dir.
-            </p>
-          </Card>
-
-          <Card>
-            <div className="w-12 h-12 rounded-lg bg-accent flex items-center justify-center mb-4">
-              <Zap className="w-6 h-6 text-accent-foreground" />
-            </div>
-            <h3 className="mb-2 font-semibold">Schnell & Klar</h3>
-            <p className="text-muted-foreground">
-              Strukturierte Hilfe beim Schreiben – ohne Ablenkung.
-            </p>
-          </Card>
-
-          <Card>
-            <div className="w-12 h-12 rounded-lg bg-accent flex items-center justify-center mb-4">
-              <Users className="w-6 h-6 text-accent-foreground" />
-            </div>
-            <h3 className="mb-2 font-semibold">Für Freelancer</h3>
-            <p className="text-muted-foreground">
-              Entwickelt von Freelancern für Freelancer.
-            </p>
-          </Card>
-        </div>
-      </section>
+      </footer>
 
       {showWaitlist && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50">
-          <Card className="max-w-md w-full">
-            {!submitted ? (
-              <>
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="font-semibold text-lg">Warteliste beitreten</h2>
-                  <button
-                    type="button"
-                    onClick={() => setShowWaitlist(false)}
-                    className="text-muted-foreground hover:text-foreground"
-                    aria-label="Schließen"
-                  >
-                    ✕
-                  </button>
-                </div>
-                <p className="text-muted-foreground mb-6">
-                  Wir informieren dich, sobald Scribe verfügbar ist.
-                </p>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <Input
-                    label="Name"
-                    placeholder="Dein Name"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    required
-                  />
-                  <Input
-                    label="E-Mail"
-                    type="email"
-                    placeholder="deine@email.de"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    required
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Deine Daten werden vertraulich behandelt und nicht
-                    weitergegeben.
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/50 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="waitlist-title"
+          onClick={() => setShowWaitlist(false)}
+        >
+          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md">
+            <Card className="shadow-xl border-border/80 rounded-xl">
+              {!submitted ? (
+                <>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 id="waitlist-title" className="font-semibold text-lg">
+                      Warteliste beitreten
+                    </h2>
+                    <button
+                      type="button"
+                      onClick={() => setShowWaitlist(false)}
+                      className="rounded-lg p-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                      aria-label="Dialog schließen"
+                    >
+                      <span className="text-lg leading-none" aria-hidden>
+                        ×
+                      </span>
+                    </button>
+                  </div>
+                  <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
+                    Wir informieren dich, sobald Scribe verfügbar ist.
                   </p>
-                  <Button type="submit" className="w-full">
-                    Eintragen
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <Input
+                      label="Name"
+                      placeholder="Dein Name"
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                      autoComplete="name"
+                      required
+                    />
+                    <Input
+                      label="E-Mail"
+                      type="email"
+                      placeholder="deine@email.de"
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      autoComplete="email"
+                      required
+                    />
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Deine Daten werden vertraulich behandelt und nicht weitergegeben.
+                    </p>
+                    <Button type="submit" className="w-full">
+                      Eintragen
+                    </Button>
+                  </form>
+                </>
+              ) : (
+                <div className="text-center py-6 sm:py-8">
+                  <CheckCircle2 className="w-14 h-14 sm:w-16 sm:h-16 text-primary mx-auto mb-4" aria-hidden />
+                  <h3 className="mb-2 font-semibold text-lg">Vielen Dank!</h3>
+                  <p className="text-muted-foreground mb-6 text-sm">
+                    Du bist auf der Warteliste. Wir melden uns bald.
+                  </p>
+                  <Button type="button" onClick={() => setShowWaitlist(false)}>
+                    Schließen
                   </Button>
-                </form>
-              </>
-            ) : (
-              <div className="text-center py-8">
-                <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-4" />
-                <h3 className="mb-2 font-semibold">Vielen Dank!</h3>
-                <p className="text-muted-foreground mb-6">
-                  Du bist auf der Warteliste. Wir melden uns bald.
-                </p>
-                <Button onClick={() => setShowWaitlist(false)}>Schließen</Button>
-              </div>
-            )}
-          </Card>
+                </div>
+              )}
+            </Card>
+          </div>
         </div>
       )}
     </div>

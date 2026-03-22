@@ -7,7 +7,8 @@ import { Dashboard } from "./Dashboard";
 type View = "landing" | "dashboard";
 
 export function ScribeApp() {
-  const [currentView, setCurrentView] = useState<View>("dashboard");
+  /* Start auf Landing: klarer Einstieg; „Zur App“ wechselt ins Dashboard */
+  const [currentView, setCurrentView] = useState<View>("landing");
 
   return (
     <div className="min-h-screen w-full">
