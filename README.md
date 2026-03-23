@@ -10,11 +10,12 @@ so you can focus on actual work.
 
 - ✅ Project structure
 - ✅ Core functionality
+- ✅ Design & UI
 -  Supabase (in progress)
 -  AI integration (coming soon)
--  Design & UI (coming soon)
+  
 
-## 🗺️ Roadmap
+##  Roadmap
 
 - [x] Core structure
 - [ ] Cold email generator
@@ -23,10 +24,10 @@ so you can focus on actual work.
 - [ ] Proposals & offers
 - [ ] LinkedIn & WhatsApp messages
 
-## 🛠️ Built with
+##  Built with
 
 Node.js, Tailwind, HTML, CSS, Typescript/Javascript
 
 ---
 
-Built by a 14 year old who hates writing emails. 🔥
+Built by a 14 year old who hates writing emails. 
