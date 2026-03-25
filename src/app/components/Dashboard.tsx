@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { User } from "@/lib/supabase-js";
+import type { supabase} from "@/lib/supabase";
 import { SidebarItem } from "./SidebarItem";
 import { Button } from "./Button";
 import { DashboardHome } from "./DashboardHome";
@@ -21,6 +23,20 @@ import {
 
 type View = "landing" | "dashboard";
 
+function labelFromUser(user: User | null): string {
+  if (!user) return "Lädt...";
+  if (user.email) return user.email;
+  const meta = user.user_metadata as Record<string, unknown> | undefined;
+  const name = 
+    typeof meta?.full_name === "string"
+      ? meta.full_name 
+      : typeof meta?.name === "string"
+        ? meta.name 
+        : "";
+  if (name.trim()) return name.trim();
+  return `Nutzer ${user.id.slice(0, 8)}...`;
+}
+
 export function Dashboard({
   onNavigate,
 }: {
@@ -28,6 +44,42 @@ export function Dashboard({
 }) {
   const [activeSection, setActiveSection] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [accountLabel, setAccountLabel] = useState("Lädt...");
+  const [signingOut, setSigningOut] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function sync() {
+      const { data } = await supabase.auth.getSession();
+      if (cancelled) return;
+      setAccountLabel(labelFromUser(data.session?.user ?? null));
+    }
+    void sync();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!cancelled) setAccountLabel(labelFromUser(session?.user ?? null));
+    });
+
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) console.error("signOut", error);
+    } catch (e) {
+      console.error("signOut",e);
+    } finally {
+      setSigningOut(false);
+    }
+  }
 
   const navigationItems = [
     { id: "home", icon: <Home className="w-5 h-5" />, label: "Home" },
