@@ -7,10 +7,12 @@ personalized cold emails and finds potential clients automatically –
 so you can focus on actual work.
 
 ##  Status
-
-- ✅ Project structure
-- ✅ Core functionality
-- ✅ Design & UI
+-  CRM Board with lead pipeline
+-  Analytics Dashboard(done)
+-  Supabase complete(done)
+-  Project structure(done)
+-  Core functionality(done)
+-  Design & UI (done)
 -  Supabase (in progress)
 -  AI integration (coming soon)
   
