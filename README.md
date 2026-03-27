@@ -7,7 +7,7 @@ personalized cold emails and finds potential clients automatically –
 so you can focus on actual work.
 
 ##  Status
--  CRM Board with lead pipeline
+-  CRM Board with lead pipeline(done)
 -  Analytics Dashboard(done)
 -  Supabase complete(done)
 -  Project structure(done)
