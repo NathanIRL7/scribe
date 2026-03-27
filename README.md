@@ -13,8 +13,8 @@ so you can focus on actual work.
 -  Project structure(done)
 -  Core functionality(done)
 -  Design & UI (done)
--  Supabase (in progress)
 -  AI integration (coming soon)
+-  Something else (coming soon)
   
 
 ##  Roadmap
