@@ -10,6 +10,8 @@ const KEYS = {
   style: "scribe_v1_schreibstil",
   /** Legacy-Key aus älteren Versionen */
   styleLegacy: "scribe_v1_style",
+  /**Home-Hero: freier Prompt-Text (bis KI andockt) */
+  homePrompt: "scribe_v1_home_prompt",
 } as const;
 
 export type DraftType = "kalt-email" | "follow-up" | "antwort";
@@ -229,4 +231,22 @@ export function getDraftActivityLast7Days(): DraftDayActivity[] {
     });
   }
   return result;
+}
+
+export function loadHomePrompt(): string {
+  if (typeof window === "undefined") return "";
+  try {
+    return localStorage.getItem(KEYS.homePrompt) ?? "";
+  } catch {
+    return "";
+  }
+}
+
+export function saveHomePrompt(text:string): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(KEYS.homePrompt, text);
+  } catch (e) {
+    console.error("scribeLocalStorage saveHomePrompt", e);
+  }
 }

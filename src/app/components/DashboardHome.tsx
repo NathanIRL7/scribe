@@ -18,6 +18,8 @@ import {
     countDraftsByType,
     loadDrafts,
     getDraftActivityLast7Days,
+    loadHomePrompt,
+    saveHomePrompt,
     type Draft,
     type DraftType,
 } from "@/lib/scribeLocalStorage";
@@ -61,7 +63,18 @@ export function DashboardHome({ onGoTo }: Props) {
     const [activitySeries, setActivitySeries] = useState<
         ReturnType<typeof getDraftActivityLast7Days>
     >([]);
-    const [homePrompt, setHomePrompt] = useState<string>("");
+    const [homePrompt, setHomePrompt] = useState("");
+    const [homePromptReady, setHomePromptReady] = useState(false);
+
+    useEffect(() => {
+        setHomePrompt(loadHomePrompt());
+        setHomePromptReady(true);
+    }, []);
+
+    useEffect(() => {
+        if (!homePromptReady) return;
+        saveHomePrompt(homePrompt);
+    }, [homePrompt, homePromptReady]);
 
     useEffect(() => {
         queueMicrotask(() => {
