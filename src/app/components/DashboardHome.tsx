@@ -61,6 +61,7 @@ export function DashboardHome({ onGoTo }: Props) {
     const [activitySeries, setActivitySeries] = useState<
         ReturnType<typeof getDraftActivityLast7Days>
     >([]);
+    const [homePrompt, setHomePrompt] = useState<string>("");
 
     useEffect(() => {
         queueMicrotask(() => {
@@ -137,6 +138,58 @@ export function DashboardHome({ onGoTo }: Props) {
 
     return (
         <div className="space-y-10 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <section aria-labelledby="home-start-heading" className="space-y-6">
+              <div>
+                <h2
+                  id="home-start-heading"
+                  className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground"
+                >
+                  Was möchtest du heute erledigen?
+                </h2>
+                <p className="text-muted-foreground text-sm mt-1 max-w-2xl">
+                     Kurz beschreiben - später kann die KI hier andocken.
+                </p>
+              </div>
+              <Card className="p-4 sm:p-6 border-border/80 shadow-sm">
+                <label htmlFor="home-prompt" className="sr-only">
+                  Aufgabe
+                </label>
+                <textarea
+                  id="home-prompt"
+                  rows={4}
+                  placeholder="z.B. Follow-up für eine Firma XY, höflich und kurz..."
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-y min-h-[7rem]"
+                />
+              </Card>
+            </section>
+          </div>
+
+          <section aria-labelledby="home-start-heading" className="space-y-6">
+            <div>
+              <h2 id="home-start-heading" 
+                  className="text-lg sm:text-2xl font-semibold tracking-tight text-foreground"
+                >
+                  Was möchtest du heute erledigen?
+              </h2>
+              <p className="text-muted-foreground text-sm mt-1 max-w-2xl">
+                  Kurz beschreiben - später kann die KI hier andocken.
+              </p>
+            </div>
+            <Card className="p-4 sm:p-6 border-border/80 shadow-sm">
+                <label htmlFor="home-prompt" className="sr-only">
+                    Aufgabe
+                </label>
+                <textarea
+                  id="home-prompt"
+                  rows={4}
+                  value={homePrompt}
+                  onChange={(e) => setHomePrompt(e.target.value)}
+                  placeholder="z.B. Follow-up für eine Firma XY, höflich und kurz ..."
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-y min-h-[7rem]"
+                />
+            </Card>
+          </section>
             <div>
                 <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-1">
                   Übersicht

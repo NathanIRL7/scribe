@@ -1,5 +1,7 @@
 # Scribe / FreelancerOS – Befehle & Git (Schnellreferenz)
 
+*Liegt im Ordner **`project md`** zusammen mit Launch, GIthib Hilfe und anderen Notizen.*
+
 Projektordner (immer zuerst hierhin, wenn das Terminal woanders startet):
 
 ```powershell

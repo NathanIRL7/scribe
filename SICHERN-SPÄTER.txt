@@ -1,8 +1,0 @@
-WICHTIG: Projekt sichern
-
-Optionen:
-1. Git: Ordner als Git-Repo initialisieren, auf GitHub pushen
-2. ZIP: Ganzen FreelancerOS-Ordner als ZIP packen und woanders speichern
-3. Cloud: Auf Google Drive, OneDrive oder iCloud hochladen
-
-Vor Deploy oder großen Änderungen: Immer Backup machen!

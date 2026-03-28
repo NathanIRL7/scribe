@@ -9,6 +9,7 @@ import { KaltEmailSection } from "./sections/KaltEmailSection";
 import { FollowUpSection } from "./sections/FollowUpSection";
 import { VerlaufSection } from "./sections/VerlaufSection";
 import { AntwortSection } from "./sections/AntwortSection";
+import { CrmBoardSection } from "./sections/CrmBoardSection";
 
 type Props = {
   sectionId: string;
@@ -23,6 +24,8 @@ export function DashboardSectionContent({ sectionId, onBackHome }: Props) {
       return <SchreibstilSection />;
     case "kontakte":
       return <KontakteSection />;
+    case "crm":
+      return <CrmBoardSection />;
     case "kalt-email":
       return <KaltEmailSection />;
     case "follow-up":

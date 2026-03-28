@@ -13,6 +13,7 @@ import {
   User,
   PenTool,
   Users,
+  LayoutGrid,
   Mail,
   Reply,
   History,
@@ -20,6 +21,10 @@ import {
   Menu,
   X,
 } from "lucide-react";
+
+type NavItem = { id: string; icon: React.ReactNode; label: string };
+
+type NavGroup = { heading: string; items: NavItem[] };
 
 type View = "landing" | "dashboard";
 
@@ -81,24 +86,39 @@ export function Dashboard({
     }
   }
 
-  const navigationItems = [
-    { id: "home", icon: <Home className="w-5 h-5" />, label: "Home" },
-    { id: "profil", icon: <User className="w-5 h-5" />, label: "Profil" },
+  const navigationGroups: NavGroup[] = [
     {
-      id: "schreibstil",
-      icon: <PenTool className="w-5 h-5" />,
-      label: "Schreibstil",
+      heading: "Übersicht",
+      items: [{ id: "home", icon: <Home className="w-5 h-5" />, label: "Übersicht"}],
     },
-    { id: "kontakte", icon: <Users className="w-5 h-5" />, label: "Kontakte" },
-    { id: "kalt-email", icon: <Mail className="w-5 h-5" />, label: "Kalt-Email" },
-    { id: "follow-up", icon: <Reply className="w-5 h-5" />, label: "Follow-up" },
-    { id: "verlauf", icon: <History className="w-5 h-5" />, label: "Verlauf" },
     {
-      id: "antwort",
-      icon: <MessageSquare className="w-5 h-5" />,
-      label: "Antwort",
+      heading: "Kontakte & CRM",
+      items: [
+        { id: "kontakte", icon: <Users className="w-5 h-5" />, label: "Kontakte" },
+        { id: "crm", icon: <LayoutGrid className="w-5 h-5" />, label: "CRM/ Pipeline" },
+      ],
+    },
+    {
+      heading: "E-Mail",
+      items: [
+        { id: "kalt-email", icon: <Mail className="w-5 h-5" />, label: "Kalt-Email" },
+        { id: "follow-up", icon: <Reply className="w-5 h-5" />, label: "Follow-up"},
+        { id: "antwort", icon: <MessageSquare className="w-5 h-5" />, label: "Antwort"},
+        { id: "verlauf", icon: <History className="w-5 h-5" />, label: "Verlauf" },
+      ],
+    },
+    {
+      heading: "Du",
+      items: [
+        { id: "profil", icon: <User className="w-5 h-5" />, label: "Profil" },
+        { id: "schreibstil", icon: <PenTool className="w-5 h-5" />, label: "Schreibstil"},
+      ],
     },
   ];
+
+  const flatNavItems: NavItem[] = navigationGroups.flatMap((g) => g.items);
+
+
 
   const sidebarFooter = (
     <>
@@ -147,15 +167,24 @@ export function Dashboard({
           </div>
         </div>
 
-        <nav className="flex-1 p-3 overflow-y-auto space-y-0.5" aria-label="Hauptnavigation">
-          {navigationItems.map((item) => (
-            <SidebarItem
-              key={item.id}
-              icon={item.icon}
-              label={item.label}
-              active={activeSection === item.id}
-              onClick={() => setActiveSection(item.id)}
-            />
+        <nav className="flex-1 p-3 overflow-y-auto space-y-5" aria-label="Hauptnavigation">
+          {navigationGroups.map((group) => (
+            <div key={group.heading}>
+              <p className="px-3 mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {group.heading}
+              </p>
+              <div className="space-y-0.5">
+                {group.items.map((item) => (
+                  <SidebarItem
+                    key={item.id}
+                    icon={item.icon}
+                    label={item.label}
+                    active={activeSection === item.id}
+                    onClick={() => setActiveSection(item.id)}
+                  />
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
 
@@ -187,18 +216,27 @@ export function Dashboard({
               </button>
             </div>
 
-            <nav className="flex-1 p-3 overflow-y-auto space-y-0.5" aria-label="Hauptnavigation">
-              {navigationItems.map((item) => (
-                <SidebarItem
-                  key={item.id}
-                  icon={item.icon}
-                  label={item.label}
-                  active={activeSection === item.id}
-                  onClick={() => {
-                    setActiveSection(item.id);
-                    setMobileMenuOpen(false);
-                  }}
-                />
+            <nav className="flex-1 p-3 overflow-y-auto space-y-5" aria-label="Hauptnavigation">
+              {navigationGroups.map((group) => (
+                <div key={group.heading}>
+                  <p className= "px-3 mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {group.heading}
+                  </p>
+                  <div className="space-y-0.5">
+                    {group.items.map((item) => (
+                      <SidebarItem
+                        key={item.id}
+                        icon={item.icon}
+                        label={item.label}
+                        active={activeSection === item.id}
+                        onClick={() => {
+                          setActiveSection(item.id);
+                          setMobileMenuOpen(false);
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
               ))}
             </nav>
 
@@ -218,7 +256,7 @@ export function Dashboard({
             <Menu className="w-6 h-6" aria-hidden />
           </button>
           <h2 className="capitalize font-semibold text-lg truncate flex-1 text-center md:text-left md:flex-none">
-            {navigationItems.find((item) => item.id === activeSection)?.label || "Scribe"}
+            {flatNavItems.find((item) => item.id === activeSection)?.label || "Scribe"}
           </h2>
           <div className="w-10 md:w-0 shrink-0" aria-hidden />
         </header>
@@ -241,3 +279,4 @@ export function Dashboard({
     </div>
   );
 }
+
