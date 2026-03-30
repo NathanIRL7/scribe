@@ -2,12 +2,27 @@ name: Weekly Market Research
 
 on:
   schedule:
-    - cron: '0 8 * * 1'  # Jeden Montag 8 Uhr
-  workflow_dispatch:  # Auch manuell startbar
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
 
 jobs:
   research:
     runs-on: ubuntu-latest
     steps:
-      - name: Run Market Research
-        run: echo "Agent läuft"
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests openai
+
+      - name: Run Research Agent
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: python research_agent.py
