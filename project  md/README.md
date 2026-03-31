@@ -1,17 +1,18 @@
-# FreelancerOS / Scribe
+# FreelancerOS / Scribe – Index (`project  md`)
 
-**Hauptprojekt-Ordner (deine „echte“ Kopie):** dieser Ordner hier.
+Du bist im Ordner **`project  md`** (Name: `project` + **zwei** Leerzeichen + `md`). Hier liegt die **Projekt-Doku** für Mensch und KI.
 
-## Dokumentation
+## Cursor, Cowork & KI
 
-Alles Wichtige liegt unter:
+- **Pflichtlektüre für Agenten:** [`CURSOR-CONTEXT.md`](CURSOR-CONTEXT.md) – Kontext holen, Doku bei großen Änderungen pflegen.
+- **Technische Regel:** `.cursor/rules/project-md-context.mdc` (always on).
 
-**`project  md`**  
-*(Ordnername mit **zwei** Leerzeichen zwischen „project“ und „md“.)*
+## Weitere Dokumentation
 
-- **Einstieg / Index:** [`project  md/README.md`](project%20%20md/README.md)
-- **Mentor & Lernziele:** [`project  md/MENTOR-REGELN.md`](project%20%20md/MENTOR-REGELN.md)
-- **Worktree vs. Documents:** [`project  md/WORKTREE-ERKLÄRUNG.md`](project%20%20md/WORKTREE-ERKLÄRUNG.md)
+- **Projekt-Stand:** [`PROJECT-STATUS.md`](PROJECT-STATUS.md)
+- **Mentor & Lernziele:** [`Mentor-Regeln.md`](Mentor-Regeln.md)
+- **Worktree vs. Documents:** [`WORKTREE-ERKLÄRUNG.md`](WORKTREE-ERKLÄRUNG.md)
+- **Git / Befehle:** [`COMMANDS-UND-GIT.md`](COMMANDS-UND-GIT.md)
 
 ## App starten
 

@@ -1,19 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { Card } from "./Card";
 import { Mail, CheckCircle2, Shield, Zap, Users, ArrowRight } from "lucide-react";
 
-type View = "landing" | "dashboard";
-
-export function LandingPage({
-  onNavigate,
-}: {
-  onNavigate: (view: View) => void;
-}) {
+export function LandingPage() {
   const [showWaitlist, setShowWaitlist] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [submitted, setSubmitted] = useState(false);
@@ -46,7 +39,6 @@ export function LandingPage({
     }
   };
 
-
   useEffect(() => {
     if (!showWaitlist) return;
     const onKey = (e: KeyboardEvent) => {
@@ -75,17 +67,16 @@ export function LandingPage({
             <Mail className="w-6 h-6 text-primary shrink-0" aria-hidden />
             <span className="text-xl font-semibold tracking-tight">Scribe</span>
           </div>
-          <nav className="flex items-center gap-1 sm:gap-2 shrink-0">
-            <Link
-              href="/auth"
-              className="inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium bg-primary text-primary-foreground hover:bg-[#171717] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            >
-              Anmelden
-            </Link>
-            <Button variant="ghost" size="sm" type="button" onClick={() => onNavigate("dashboard")}>
-              App testen
-            </Button>
-          </nav>
+          <Button
+            variant="primary"
+            size="sm"
+            type="button"
+            onClick={() => setShowWaitlist(true)}
+            className="shrink-0 gap-1.5"
+          >
+            Warteliste
+            <ArrowRight className="w-4 h-4" aria-hidden />
+          </Button>
         </div>
       </header>
 
@@ -158,18 +149,13 @@ export function LandingPage({
       <footer className="border-t border-border mt-auto">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <span>© {new Date().getFullYear()} Scribe</span>
-          <div className="flex gap-6">
-            <Link href="/auth" className="hover:text-foreground transition-colors">
-              Login
-            </Link>
-            <button
-              type="button"
-              onClick={() => document.getElementById("scribe-features")?.scrollIntoView({ behavior: "smooth" })}
-              className="hover:text-foreground transition-colors"
-            >
-              Funktionen
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => document.getElementById("scribe-features")?.scrollIntoView({ behavior: "smooth" })}
+            className="hover:text-foreground transition-colors"
+          >
+            Funktionen
+          </button>
         </div>
       </footer>
 

@@ -1,0 +1,27 @@
+---
+description: Kontext aus project md lesen; bei größeren Änderungen Doku im Projekt aktualisieren
+alwaysApply: true
+---
+
+# Kern (immer zuerst im Kopf)
+
+**Der Haupt-Projektordner ist der, den der Nutzer in Cursor geöffnet hat** – typisch `Documents\Ordnung app\FreelancerOS`. **`qnz` ist kein Ordner bei ihm im Explorer**; das ist nur ein **Git-Worktree** unter `.cursor\worktrees\…\qnz` (separater Checkout). **Nicht** dort arbeiten oder dortige Pfade als „sein Projekt“ behandeln, **wenn** der geöffnete Workspace eindeutig **Documents** (o. Ä.) ist. **Alle Edits nur im aktuell geöffneten Workspace-Root.**
+
+---
+
+# Projekt-Kontext (`project md/`)
+
+Vor **nicht-trivialen** Aufgaben oder Code-Änderungen:
+
+1. **Zuerst Kontext einlesen** aus **`project md/`** – mindestens **`project md/README.md`** (Index); bei Bedarf **`PROJECT-STATUS.md`**, **`MENTOR-REGELN.md`**, **`WORKTREE-ERKLÄRUNG.md`** (falls vorhanden), **`COMMANDS-UND-GIT.md`**, **`CURSOR-CONTEXT.md`**, damit **Stand, Ziele und Regeln** klar sind.
+2. **`PROJECT-STATUS.md`** im **Repo-Root** mit einbeziehen, falls vorhanden. Zwei Status-Dateien **abgleichen**, nicht widersprüchlich lassen.
+
+Nach **größeren** Änderungen (neue Features, APIs, Architektur, wichtige Regeln):
+
+3. **`project md/` aktualisieren** – z. B. **`PROJECT-STATUS.md`** oder kurz **`CURSOR-CONTEXT.md`**: *was* sich geändert hat (Stichpunkte). Mini-Fixes: keine Doku-Pflicht.
+
+**Arbeitsordner:** echtes Repo (z. B. **Documents\…\FreelancerOS**). Nicht nur **`.cursor\worktrees\`** als alleinige Wahrheit – siehe Doku zu Worktrees im Projekt.
+
+**Nutzer-Regeln haben Vorrang** (z. B. nur Erklärung / keine Edits ohne ausdrückliches OK).
+
+Gilt für **Cursor**, **Cowork** und alle Agenten in diesem Repo gleichermaßen.
