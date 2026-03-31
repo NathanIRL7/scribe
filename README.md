@@ -1,4 +1,4 @@
-#  Scribe
+#  CoScribe
 
 > Stop writing emails. Start closing clients.
 
