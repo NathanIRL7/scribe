@@ -9,7 +9,7 @@ import { Button } from "./Button";
 import { DashboardHome } from "./DashboardHome";
 import { DashboardSectionContent } from "./DashboardSectionContent";
 import { CampaignWorkspace } from "./CampaignWorkspace";
-import { KaltEmailSection } from "./sections/KaltEmailSection";
+import { KaltCampaignArea } from "./KaltCampaignArea";
 import {
   Home,
   User,
@@ -278,7 +278,7 @@ export function Dashboard({
             {activeSection === "kalt-email" && (
               <div className="flex-1 min-h-0 flex flex-col px-4 sm:px-6 md:px-8 lg:px-10 pb-8 overflow-hidden min-w-0">
                 <CampaignWorkspace>
-                  <KaltEmailSection />
+                  <KaltCampaignArea />
                 </CampaignWorkspace>
               </div>
             )}

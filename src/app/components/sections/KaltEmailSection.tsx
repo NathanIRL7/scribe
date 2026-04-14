@@ -12,7 +12,12 @@ import {
 const textareaClass =
   "w-full min-h-[220px] px-4 py-2.5 bg-input-background border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background resize-y";
 
-export function KaltEmailSection() {
+type  KaltEmailSectionProps = {
+  /**Wenn true, kein eigener Seitentitel (z.B. in Tabs). */
+  hideHeading?: boolean;
+};
+
+export function KaltEmailSection({ hideHeading = false }: KaltEmailSectionProps) {
   const [toEmail, setToEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -46,12 +51,14 @@ export function KaltEmailSection() {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Kalt-Email</h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          Erste Kontaktaufnahme – Entwurf lokal speichern (später Supabase).
-        </p>
-      </div>
+      {!hideHeading && (
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Kalt-Email</h1>
+          <p className="text-muted-foreground text-sm mt-1">
+            Erste Kontaktaufnahme - Entwurf lokal speichern (später Supabase).
+          </p>
+        </div>
+      )}
 
       <Card>
         <div className="space-y-4">
