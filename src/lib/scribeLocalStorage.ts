@@ -1,7 +1,11 @@
 /**
- * Lokale Daten für Coscribe (Browser localStorage).
- * Später durch Supabase ersetzbar – gleiche Konzepte: Entwürfe, Kontakte, Profil.
+ * Lokale Daten fuer Coscribe (Browser localStorage).
+ * Spaeter durch Supabase ersetzbar - gleiche Konzepte: Entwuerfe, Kontakte, Profil.
  */
+
+import type { DeepResearchSnapshot } from "./deepResearch";
+
+export type { DeepResearchSnapshot } from "./deepResearch";
 
 const KEYS = {
   drafts: "scribe_v1_drafts",
@@ -9,7 +13,6 @@ const KEYS = {
   profile: "scribe_v1_profile",
   style: "scribe_v1_schreibstil",
   campaigns: "scribe_v1_campaigns",
-  /** Legacy-Key aus älteren Versionen */
   styleLegacy: "scribe_v1_style",
 } as const;
 
@@ -39,6 +42,39 @@ export type Profile = {
   company: string;
 };
 
+export type DraftDayActivity = {
+  dateKey: string;
+  labelShort: string;
+  count: number;
+};
+
+export type CampaignStatus = "draft" | "waiting_reply" | "action_required" | "completed";
+export type CampaignTone = "formell" | "locker" | "neutral";
+
+export type CampaignPackage = {
+  erstmailBetreff: string;
+  erstmailBody: string;
+  followUp1: string;
+  followUp2: string;
+  followUp3: string;
+  checklist: string;
+};
+
+export type Campaign = {
+  id: string;
+  title: string;
+  status: CampaignStatus;
+  audience: string;
+  offer: string;
+  tone: CampaignTone;
+  taboos: string;
+  followUpCount: 1 | 2 | 3;
+  package: CampaignPackage;
+  research?: DeepResearchSnapshot;
+  createdAt: string;
+  updatedAt: string;
+};
+
 function safeParse<T>(raw: string | null, fallback: T): T {
   if (!raw) return fallback;
   try {
@@ -48,7 +84,6 @@ function safeParse<T>(raw: string | null, fallback: T): T {
   }
 }
 
-/** Normalisiert alte gespeicherte Entwürfe (z. B. Tippfehler bei Datum-Feldern). */
 function normalizeDraft(raw: unknown): Draft | null {
   if (!raw || typeof raw !== "object") return null;
   const o = raw as Record<string, unknown>;
@@ -76,23 +111,12 @@ function normalizeDraft(raw: unknown): Draft | null {
 
 export function loadDrafts(): Draft[] {
   if (typeof window === "undefined") return [];
-  try {
-    const raw = safeParse<unknown[]>(localStorage.getItem(KEYS.drafts), []);
-    return raw
-      .map((item) => normalizeDraft(item))
-      .filter((d): d is Draft => d !== null);
-  } catch {
-    return [];
-  }
+  const raw = safeParse<unknown[]>(localStorage.getItem(KEYS.drafts), []);
+  return raw.map((item) => normalizeDraft(item)).filter((d): d is Draft => d !== null);
 }
 
 export function saveDrafts(list: Draft[]): void {
-  try {
-    localStorage.setItem(KEYS.drafts, JSON.stringify(list));
-  } catch (e) {
-    console.error("scribeLocalStorage saveDrafts", e);
-    throw e;
-  }
+  localStorage.setItem(KEYS.drafts, JSON.stringify(list));
 }
 
 export function upsertDraft(draft: Draft): void {
@@ -109,20 +133,11 @@ export function deleteDraft(id: string): void {
 
 export function loadContacts(): Contact[] {
   if (typeof window === "undefined") return [];
-  try {
-    return safeParse<Contact[]>(localStorage.getItem(KEYS.contacts), []);
-  } catch {
-    return [];
-  }
+  return safeParse<Contact[]>(localStorage.getItem(KEYS.contacts), []);
 }
 
 export function saveContacts(list: Contact[]): void {
-  try {
-    localStorage.setItem(KEYS.contacts, JSON.stringify(list));
-  } catch (e) {
-    console.error("scribeLocalStorage saveContacts", e);
-    throw e;
-  }
+  localStorage.setItem(KEYS.contacts, JSON.stringify(list));
 }
 
 export function upsertContact(contact: Contact): void {
@@ -137,48 +152,46 @@ export function deleteContact(id: string): void {
   saveContacts(loadContacts().filter((c) => c.id !== id));
 }
 
+function normalizeResearch(raw: unknown): DeepResearchSnapshot | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const r = raw as Record<string, unknown>;
+  if (typeof r.url !== "string" || typeof r.fetchedAt !== "string") return undefined;
+  const source = r.source === "llm" || r.source === "heuristic" ? r.source : "heuristic";
+  return {
+    url: r.url,
+    fetchedAt: r.fetchedAt,
+    mainOffer: typeof r.mainOffer === "string" ? r.mainOffer : "",
+    newsHook: typeof r.newsHook === "string" ? r.newsHook : "",
+    industryProblems: typeof r.industryProblems === "string" ? r.industryProblems : "",
+    contactPerson: typeof r.contactPerson === "string" ? r.contactPerson : "",
+    source,
+  };
+}
+
 const defaultProfile: Profile = { displayName: "", company: "" };
 
 export function loadProfile(): Profile {
   if (typeof window === "undefined") return defaultProfile;
-  try {
-    return {
-      ...defaultProfile,
-      ...safeParse<Partial<Profile>>(localStorage.getItem(KEYS.profile), {}),
-    };
-  } catch {
-    return defaultProfile;
-  }
+  return {
+    ...defaultProfile,
+    ...safeParse<Partial<Profile>>(localStorage.getItem(KEYS.profile), {}),
+  };
 }
 
 export function saveProfile(p: Profile): void {
-  try {
-    localStorage.setItem(KEYS.profile, JSON.stringify(p));
-  } catch (e) {
-    console.error("scribeLocalStorage saveProfile", e);
-    throw e;
-  }
+  localStorage.setItem(KEYS.profile, JSON.stringify(p));
 }
 
 export function loadStyleNotes(): string {
   if (typeof window === "undefined") return "";
-  try {
-    let raw = localStorage.getItem(KEYS.style);
-    if (raw === null) raw = localStorage.getItem(KEYS.styleLegacy);
-    const parsed = safeParse<{ text?: string }>(raw, { text: "" });
-    return typeof parsed.text === "string" ? parsed.text : "";
-  } catch {
-    return "";
-  }
+  let raw = localStorage.getItem(KEYS.style);
+  if (raw === null) raw = localStorage.getItem(KEYS.styleLegacy);
+  const parsed = safeParse<{ text?: string }>(raw, { text: "" });
+  return typeof parsed.text === "string" ? parsed.text : "";
 }
 
 export function saveStyleNotes(text: string): void {
-  try {
-    localStorage.setItem(KEYS.style, JSON.stringify({ text }));
-  } catch (e) {
-    console.error("scribeLocalStorage saveStyleNotes", e);
-    throw e;
-  }
+  localStorage.setItem(KEYS.style, JSON.stringify({ text }));
 }
 
 export function countDraftsByType(type: DraftType): number {
@@ -196,51 +209,9 @@ export function countContacts(): number {
   return loadContacts().length;
 }
 
-/** Ein Punkt pro Kalendertag (letzte 7 Tage), Zählung nach `updatedAt` der Entwürfe. */
-export type DraftDayActivity = {
-  dateKey: string;
-  labelShort: string;
-  count: number;
-};
-
-/**Status für Pipeline-Ansicht */
-export function CampaignStatus = 
-  | "draft"
-  | "waiting_reply"
-  | "action_required"
-  | "completed";
-
-export type CampaignTone = "formell" | "locker" | "neutral";
-
-/**Generiertes Outreach-Paket (lokal, ohne API). */
-export type Campaign = {
-  erstmailBetreff: string;
-  erstmailBody: string;
-  followup1: string;
-  followup2: string;
-  followup3: string;
-  followup4: string;
-  checklist: string;
-};
-
-export type Campaign = {
-  id: string;
-  title: string;
-  status: CampaignStatus;
-  audience: string;
-  offer: string;
-  tone: CampaignTone;
-  taboos: string;
-  followUpCount: 1 | 2 | 3;
-  package: CampaignPackage;
-  createdAt: string;
-  updatedAt: string;
-};
-
 export function getDraftActivityLast7Days(): DraftDayActivity[] {
-  if (typeof window === "undefined") {
-    return [];
-  }
+  if (typeof window === "undefined") return [];
+
   const drafts = loadDrafts();
   const result: DraftDayActivity[] = [];
   for (let i = 6; i >= 0; i--) {
@@ -253,13 +224,9 @@ export function getDraftActivityLast7Days(): DraftDayActivity[] {
       const t = new Date(dr.updatedAt).getTime();
       return t >= start && t < end;
     }).length;
-    const labelShort = d.toLocaleDateString("de-DE", {
-      weekday: "short",
-      day: "numeric",
-    });
     result.push({
       dateKey: d.toISOString().slice(0, 10),
-      labelShort,
+      labelShort: d.toLocaleDateString("de-DE", { weekday: "short", day: "numeric" }),
       count,
     });
   }
@@ -268,21 +235,26 @@ export function getDraftActivityLast7Days(): DraftDayActivity[] {
 
 function normalizeCampaign(raw: unknown): Campaign | null {
   if (!raw || typeof raw !== "object") return null;
+
   const o = raw as Record<string, unknown>;
   const id = typeof o.id === "string" ? o.id : "";
   if (!id) return null;
+
   const tone = o.tone as CampaignTone;
   if (!["formell", "locker", "neutral"].includes(tone)) return null;
+
   const status = o.status as CampaignStatus;
-  if (
-    !["draft", "waiting_reply", "action required", "closed"].includes(status)
-  )
+  if (!["draft", "waiting_reply", "action_required", "completed"].includes(status)) {
     return null;
-  const fu = followUpCount;
-  const followUpCount = fu === 1 || fu === 2 || fu === 3 ? fu : 1;
+  }
+
+  const fuRaw = o.followUpCount;
+  const followUpCount = fuRaw === 1 || fuRaw === 2 || fuRaw === 3 ? fuRaw : 1;
+
   const pkg = o.package;
   if (!pkg || typeof pkg !== "object") return null;
   const p = pkg as Record<string, unknown>;
+
   return {
     id,
     title: typeof o.title === "string" ? o.title : "Kampagne",
@@ -294,42 +266,32 @@ function normalizeCampaign(raw: unknown): Campaign | null {
     followUpCount,
     package: {
       erstmailBetreff: typeof p.erstmailBetreff === "string" ? p.erstmailBetreff : "",
-    erstmailBody: typeof p.erstmailBody === "string" ? p.followup1 : "",
-    followUp1: typeof p.followUp1 === "string" ? p.followUp1 : "",
-    followUp2: typeof p.followUp2 === "string" ? p.followUp2 : "",
-    followUp3: typeof p.followUp3 === "string" ? p.followUp3 : "",
-    checklist: typeof p.checklist === "string" ? p.followup4 : "",
+      erstmailBody: typeof p.erstmailBody === "string" ? p.erstmailBody : "",
+      followUp1: typeof p.followUp1 === "string" ? p.followUp1 : "",
+      followUp2: typeof p.followUp2 === "string" ? p.followUp2 : "",
+      followUp3: typeof p.followUp3 === "string" ? p.followUp3 : "",
+      checklist: typeof p.checklist === "string" ? p.checklist : "",
     },
+    research: normalizeResearch(o.research),
     createdAt: typeof o.createdAt === "string" ? o.createdAt : new Date().toISOString(),
     updatedAt: typeof o.updatedAt === "string" ? o.updatedAt : new Date().toISOString(),
-  }
+  };
 }
 
 export function loadCampaigns(): Campaign[] {
   if (typeof window === "undefined") return [];
-  try {
-    const raw = safePrase<unknown[]>(localStorage.getItem(KEYS.campaigns), []);
-    return raw
-    .map((item) => normalizeCampaign(item))
-    .filter((c): c is Campaign => c !== null);
-  } catch {
-    return [];
-  }
+  const raw = safeParse<unknown[]>(localStorage.getItem(KEYS.campaigns), []);
+  return raw.map((item) => normalizeCampaign(item)).filter((c): c is Campaign => c !== null);
 }
 
 function saveCampaigns(list: Campaign[]): void {
-  try {
-    localStorage.setItem(KEYS.campaigns, JSON.stringify(list));
-  } catch (e) {
-    console.error("scribeLocalStorage saveCampaigns", e);
-    throw e;
-  }
+  localStorage.setItem(KEYS.campaigns, JSON.stringify(list));
 }
 
 export function upsertCampaign(campaign: Campaign): void {
   const list = loadCampaigns();
   const i = list.findIndex((c) => c.id === campaign.id);
-  if (i >= 0) list [i] = campaign;
+  if (i >= 0) list[i] = campaign;
   else list.unshift(campaign);
   saveCampaigns(list);
 }
@@ -338,77 +300,102 @@ export function deleteCampaign(id: string): void {
   saveCampaigns(loadCampaigns().filter((c) => c.id !== id));
 }
 
-/**Baut Texte aus Wizard-Eingaben (ohne LLM) . */
 export function buildCampaignPackage(input: {
   audience: string;
   offer: string;
   tone: CampaignTone;
   taboos: string;
   followUpCount: 1 | 2 | 3;
+  research?: DeepResearchSnapshot | null;
 }): CampaignPackage {
-  const { audience, offer, tone, taboos, followUpCount } = input;
-  const gruss =
-    tone === "formell"
-      ? "Mit freundlichen Grüßen"
-      : tone === "locker"
-        ? "Viele Grüße"
-        : "Beste Grüße";
-  const duSie = tone === "formell" ? "Sie" : "du";
+  const { audience, offer, tone, taboos, followUpCount, research } = input;
+  const greeting =
+    tone === "formell" ? "Mit freundlichen Gruessen" : tone === "locker" ? "Viele Gruesse" : "Beste Gruesse";
   const locker = tone === "locker";
-  const betreff = 
-    offer.trim().slice(0, 60) || "Kurze Vorstellung - passend für Sie";
-  const tabooLine = taboos.trim()
-    ? `\n\nBitte vermeiden im Gespräch: ${taboos.trim()}`
+
+  const hostHint = research
+    ? (() => {
+        try {
+          return new URL(research.url).hostname.replace(/^www\./, "");
+        } catch {
+          return "";
+        }
+      })()
     : "";
 
-    const erstmailBody = `Hallo,
-    
-ich melde mich, weil ich ${audience.trim() || "…"} besonders gut unterstützen kann.
-${offer.trim() || "Kurz zu meinen Angebot: …"}
+  const subject =
+    (research?.mainOffer && hostHint
+      ? `${hostHint.slice(0, 40)} - ${research.mainOffer.slice(0, 35)}`
+      : offer.trim().slice(0, 60)) || "Kurze Vorstellung - passend fuer Sie";
 
-${tone === "formell" ? "Ich freue mich auf Ihre Rückmeldung." : tone === "locker" ? "Melde dich gern, wenn es passt - oder stell mir eine Frage." : "Bei Interesse freue ich mich auf einen kurzen Austausch."}
+  const tabooLine = taboos.trim()
+    ? `\n\nBitte vermeiden im Gespraech: ${taboos.trim()}`
+    : "";
 
-${gruss}${tabooLine}`;
- 
-  const fu1Open = locker ? "Hey," : "Hallo,";
-  const fu1Q = locker
-    ? `ich wollte nachhaken: Konntest du mein Angebot zu „${offer.trim().slice(0, 80) || "…"}“  schon sichten? Kurze Rückmeldung reicht.`
-    : `ich wollte kurz nachhaken: Konnten Sie mein Angebot zu „${offer.trim().slice(0, 80) || "…"}“ schon sichten?${tone === "formell" ? " Ich stehe bei Rückfragen gern zur Verfügung." : " Eine kurze Rückmeldung genügt."}`;
-  const fu1 = `${fu1Open}`
+  const researchBlock = research
+    ? `${locker ? "Ich habe mir eure Website angesehen" : "Ich habe mir Ihre Website angesehen"} (${hostHint || "Website"}): ${research.mainOffer.slice(0, 350)}
+${locker ? "Passt aktuell" : "Passt aktuell"}: ${research.newsHook.slice(0, 400)}
+${locker ? "Thema, das ich oft" : "Ein Thema, das ich oft"} bei aehnlichen Betrieben sehe: ${research.industryProblems.slice(0, 350)}
+Als Ansprechpartner habe ich notiert: ${research.contactPerson.slice(0, 200)}
 
-${fu1Q}
+`
+    : "";
 
-${gruss}`;
+  const erstmailBody = `Hallo,
+
+${researchBlock}ich melde mich, weil ich ${audience.trim() || "..."} besonders gut unterstuetzen kann.
+${offer.trim() || "Kurz zu meinem Angebot: ..."}
+
+${
+  tone === "formell"
+    ? "Ich freue mich auf Ihre Rueckmeldung."
+    : tone === "locker"
+      ? "Melde dich gern, wenn es passt - oder stell mir eine Frage."
+      : "Bei Interesse freue ich mich auf einen kurzen Austausch."
+}
+
+${greeting}${tabooLine}`;
+
+  const fu1 = `${locker ? "Hey," : "Hallo,"}
+
+${
+  locker
+    ? `ich wollte nachhaken: Konntest du mein Angebot zu "${offer.trim().slice(0, 80) || "..."}" schon sichten? Kurze Rueckmeldung reicht.`
+    : `ich wollte kurz nachhaken: Konnten Sie mein Angebot zu "${offer.trim().slice(0, 80) || "..."}" schon sichten?`
+}
+
+${greeting}`;
 
   const fu2 = `Hallo,
 
-letzte kurze Nachfrage von meiner Seite - passt das Thema „${offer.trim().slice(0, 60) || "…"}“ für dich aktuell, oder soll ich später wieder hören?
+letzte kurze Nachfrage von meiner Seite - passt das Thema "${offer.trim().slice(0, 60) || "..."}" aktuell, oder soll ich mich spaeter nochmal melden?
 
-${gruss}`;
- 
-  const fu3 = locker
-    ? `Hallo,
+${greeting}`;
 
-ich gehe davon aus, dass es zeitlich nicht passt. Wenn Sie später wieder anknüpfen willst, antworte Sie einfach  auf diese Mail.
+  const fu3 = `Hallo,
 
-${gruss}`;
-    : `HTMLAllCollection,
+ich gehe davon aus, dass es zeitlich gerade nicht passt. Wenn es spaeter wieder relevant wird, antworte einfach auf diese Mail.
 
-ich gehe davon AuthSessionMissingError, dass es zeitlich nicht PassThrough. Wenn Sie später wieder anknüpfen möchten, antworten Sie einfach auf diese Mail.
+${greeting}`;
 
-  const checklist = `Vor dem Absenden prüfen:
-• Emppfänger und Anrede (${duSie})
-• Keine Versprechen, die ${locker ? "du" : "Sie"} nicht halten ${locker ? "kannst" : "können"}
-• Betreff klar und spezifisch
-${taboos.trim() ? `• Tabus beachtet: ${taboos.trim()}` : ""}
-• Follow-up ${followUpCount}× eingeplant`;
+  const checklist = `Vor dem Absenden pruefen:
+- Empfaenger und Anrede
+- Keine Versprechen, die ${locker ? "du" : "Sie"} nicht halten ${locker ? "kannst" : "koennen"}
+- Betreff klar und spezifisch
+${taboos.trim() ? `- Tabus beachtet: ${taboos.trim()}` : ""}
+${
+  research
+    ? `- Recherche (${research.source === "llm" ? "KI" : "Heuristik"}) vom ${new Date(research.fetchedAt).toLocaleString("de-DE")} kurz gegen Impressum / Website geprueft`
+    : ""
+}
+- Follow-up ${followUpCount}x eingeplant`;
 
   return {
-    erstmailBetreff: betreff,
+    erstmailBetreff: subject,
     erstmailBody,
-    followUp: fu1,
-    followUp: fu2,
-    followUp: fu3,
+    followUp1: fu1,
+    followUp2: fu2,
+    followUp3: fu3,
     checklist,
   };
 }
