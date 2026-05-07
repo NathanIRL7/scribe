@@ -18,7 +18,7 @@ General-purpose assistants can draft text, but they rarely anchor the work as a 
 
 ---
 
-## What Coscribe is
+## What cosrib is
 
 - **Job-first, not chat-first**  
   Flows like starting a **new campaign** aim at a **concrete outcome**—for example a first email, numbered follow-ups, and a short pre-send checklist—rather than an endless back-and-forth as the main experience.
